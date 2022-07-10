@@ -6,12 +6,12 @@
 
 void RifleSort::SortCycle(SortTarget* target, SortResult& result)
 {
-	auto tempStartTime = time(NULL);
-	result.StartTime = tempStartTime;
-	srand(tempStartTime);
+	result.StartTime = std::chrono::high_resolution_clock::now();
+	srand(time(NULL));
 	int index1, index2;
 	int ArrSize = target->TargetArray.size();
 
+	int _temp;
 	while (!target->IsSorted())
 	{
 		index1 = rand() % ArrSize;
@@ -22,12 +22,12 @@ void RifleSort::SortCycle(SortTarget* target, SortResult& result)
 			else ++index2;
 		}
 
-		int _temp = target->TargetArray[index1];
+		_temp = target->TargetArray[index1];
 		target->TargetArray[index1] = target->TargetArray[index2];
 		target->TargetArray[index2] = _temp;
 		++result.Moves;
 	}
 
-	result.EndTime = time(NULL);
+	result.EndTime = std::chrono::high_resolution_clock::now();
 	return;
 }

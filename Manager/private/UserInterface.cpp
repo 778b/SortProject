@@ -1,6 +1,7 @@
 #include "../public/UserInterface.h"
 #include "../../Sorts/public/SortBase.h"
 
+#include <chrono>
 #include <iostream>
 
 void _Initializer::InitializeSortManager()
@@ -23,13 +24,14 @@ void _InputCommand::ShowStartUpMessage()
 	std::cout << "SORT_MANAGER v 1.0.0: \v \n";
 	std::cout << OUT_SLINE;
 	std::cout << "TYPE help TO GET COMMAND LIST.\n";
+	
 }
 
 void _InputCommand::ShowResultMessage(SortResult& result)
 {
-	auto ExecutionTime = result.EndTime - result.StartTime;
+	std::chrono::duration<double> ExecutionTime = result.EndTime - result.StartTime;
 	std::cout << OUT_SLINE;
-	std::cout << "TIME TO SORT: " << ExecutionTime << "'s\n";
+	std::cout << "TIME TO SORT: " << ExecutionTime.count() << "'s\n";
 	std::cout << "COUNT OF MOVES: " << result.Moves << " swaps\n";
 }
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sorts\public\BubbleSort.h" />
     <ClInclude Include="Manager\public\Output.h" />
     <ClInclude Include="Manager\public\SortFactory.h" />
     <ClInclude Include="Manager\public\SortResult.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="Manager\public\SortTarget.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sorts\private\BubbleSort.cpp" />
     <ClCompile Include="Manager\main.cpp" />
     <ClCompile Include="Manager\private\SortFactory.cpp" />
     <ClCompile Include="Manager\private\UserInterface.cpp" />

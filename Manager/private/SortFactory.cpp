@@ -3,6 +3,7 @@
 
 //Sort List
 #include "../../Sorts/public/RifleSort.h"
+#include "../../Sorts/public/BubbleSort.h"
 
 
 
@@ -23,6 +24,7 @@ size_t SortFactory::GetSortCount()
 void SortFactory::RegisterAllSort()
 {
 	CheckSortForAdd(new RifleSort());
+	CheckSortForAdd(new BubbleSort());
 
 
 
