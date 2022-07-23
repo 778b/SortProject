@@ -9,6 +9,7 @@ private:
 	SortTarget(const SortTarget& copy) {};
 public:
 	SortTarget(int Count, bool random);
+	SortTarget(std::string StringArray);
 
 	bool IsSorted();
 	std::string GetArray();

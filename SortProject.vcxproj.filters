@@ -63,4 +63,7 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="SavedArray.txt" />
+  </ItemGroup>
 </Project>

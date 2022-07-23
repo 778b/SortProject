@@ -1,7 +1,9 @@
 #include "../public/UserInterface.h"
 #include "../../Sorts/public/SortBase.h"
 
+#include <vector>
 #include <chrono>
+#include <fstream>
 #include <iostream>
 
 void _Initializer::InitializeSortManager()
@@ -50,9 +52,9 @@ void _InputCommand::ShowSorts(SortFactory* factory)
 	std::vector<std::string> _ListName;
 	factory->GetNamesAllSorts(_ListName);
 	std::cout << "SORT LIST:\n";
-	for (auto& tempsort : _ListName)
+	for (size_t i = 0; i <_ListName.size();++i)
 	{
-		std::cout << "\t\t" << tempsort << std::endl;
+		std::cout << "\t"<< i << ")" << _ListName[i] << std::endl;
 	}
 	std::cout << "END SORT LIST:\n";
 }
@@ -76,12 +78,14 @@ EInput _InputCommand::InputCommand(std::string word)
 		return EInput::HELP;
 
 	case EInput::START:
-		std::cout << "START" << std::endl;
 		return EInput::START;
 
 	case EInput::SORT:
 		ShowSorts(_Initializer::FactoryPtr);
 		return EInput::SORT;
+
+	case EInput::SAVES:
+		return EInput::SAVES;
 
 	default:
 		return EInput::INCORR;
@@ -96,13 +100,53 @@ void _InputCommand::ExecuteCommand(int index)
 		return;
 
 	case EInput::START:
+		SetArrayToSort();
+		ShowArray();
+		SelectSort();
+		return;
 
+	case EInput::SAVES:
+		SavesLoop(true);
 		return;
 	}
 }
 
+void _InputCommand::SetArrayToSort()
+{
+	char tempAns;
+	while (true)
+	{
+		std::cout << "Generate new array? (y/n): ";
+
+		std::cin >> tempAns;
+		if (tempAns == 'n' || tempAns == 'y')
+		{
+			if (tempAns == 'n')
+			{
+				SavesLoop(false);
+				return;
+			}
+			else
+			{
+				// todo generate array
+				return;
+			}
+		}
+		else
+		{
+			std::cout << "\tWRONG CHAR!";
+		}
+	}
+
+}
+
 void _InputCommand::ProgramLoop()
 {
+	/*
+	*	goto
+	*/
+menu:
+
 	_Initializer::ProgramState = EProgram::MENU;
 	int result = 0b0;
 	std::string command = {""};
@@ -113,15 +157,20 @@ void _InputCommand::ProgramLoop()
 	}
 	if (result == EInput::EXIT) return;
 
+
+
+	/*
+	*	goto
+	*/
+preparing:		
+
 	std::cout << OUT_SLINE;
 	_Initializer::ProgramState = EProgram::PREPARING;
 	ExecuteCommand(result);
-	_Initializer::ArrayPtr = new SortTarget(12, true);
-	ShowArray();
-	SelectSort();
-	int tempAns;
-	std::cout << "PRESS ANY KEY TO START:)" << std::endl;
+	char tempAns;
+	std::cout << "Start? (y/n)" << std::endl;
 	std::cin >> tempAns;
+	if (tempAns == 'n') goto preparing;
 
 	std::cout << OUT_SLINE;
 	_Initializer::ProgramState = EProgram::SORTING;
@@ -132,6 +181,57 @@ void _InputCommand::ProgramLoop()
 	_Initializer::ProgramState = EProgram::RESULTING;
 	ShowArray();
 	ShowResultMessage(_result);
+}
+
+void _InputCommand::SavesLoop(bool edit)
+{
+	std::ifstream AReader("SavedArray.txt");
+	std::vector<std::string> BufferArray; 
+	std::string buffer;
+
+	int CountArray = 0;
+
+	if (AReader.fail())
+	{
+		std::cout << "\tDIDNT FIND FILE SavedArray.txt!\n";
+		return;
+	}
+
+	std::cout << OUT_SLINE;
+	std::cout << "Your saved arrays:\n";
+	while (!AReader.eof())
+	{
+		AReader >> buffer;
+		std::cout << CountArray++ << ") {" << buffer << "}.\n";
+		BufferArray.push_back(buffer);
+	}
+	AReader.close();
+
+	if (edit)
+	{
+		//todo command add
+		//todo command remove
+		//todo generate random
+	}
+	else
+	{
+		int tempIndex;
+		while (true)
+		{
+			std::cout << "Enter index of array: ";
+			std::cin >> tempIndex;
+			if (BufferArray.size() > tempIndex)
+			{
+				_Initializer::ArrayPtr = new SortTarget(BufferArray[tempIndex]);
+				break;
+			}
+			else
+			{
+				std::cout << "\tWRONG INDEX!";
+			}
+		}
+	}
+
 }
 
 void _InputCommand::SelectSort()

@@ -13,6 +13,24 @@ SortTarget::SortTarget(int Count, bool random)
 	}
 }
 
+SortTarget::SortTarget(std::string StringArray)
+{
+	std::string symbol = "";
+
+	for (int i = 0; i < StringArray.length(); ++i)
+	{
+		if (StringArray[i] >= '0' && StringArray[i] <= '9')
+		{
+			symbol += StringArray[i];
+		}
+		else
+		{
+			if (symbol.length() > 0) TargetArray.push_back(std::stoi(symbol));
+			symbol = "";
+		}
+	}
+}
+
 bool SortTarget::IsSorted()
 {
 	for (size_t i = 0; i < TargetArray.size(); ++i)
